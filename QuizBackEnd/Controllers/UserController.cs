@@ -44,7 +44,6 @@ namespace QuizBackEnd.Controllers
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
 
-            // return basic user info
             return Ok(new
             {
                 Id = user.UserId,

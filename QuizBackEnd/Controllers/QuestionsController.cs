@@ -44,7 +44,7 @@ namespace QuizBackEnd.Controllers
 
         // PUT: api/Questions/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutQuestions(int id, [FromBody]Questions questions)
+        public async Task<IActionResult> PutQuestions(int id, Questions questions)
         {
             if (id != questions.QuestionId)
             {
