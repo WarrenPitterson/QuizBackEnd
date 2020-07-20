@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using QuizBackEnd.Models;
+using QuizBackEnd.Data;
 
 namespace QuizBackEnd.Migrations
 {
@@ -27,11 +27,11 @@ namespace QuizBackEnd.Migrations
 
                     b.Property<string>("CorrectAnswer");
 
-                    b.Property<string>("InCorrectAnswer1");
+                    b.Property<string>("IncorrectAnswer1");
 
-                    b.Property<string>("InCorrectAnswer2");
+                    b.Property<string>("IncorrectAnswer2");
 
-                    b.Property<string>("InCorrectAnswer3");
+                    b.Property<string>("IncorrectAnswer3");
 
                     b.Property<string>("Question");
 
@@ -49,8 +49,6 @@ namespace QuizBackEnd.Migrations
                     b.Property<int>("QuizId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CoverImageUrl");
 
                     b.HasKey("QuizId");
 

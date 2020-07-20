@@ -10,7 +10,6 @@ namespace QuizBackEnd.Models
     {
         [Key]
         public int QuizId { get; set; }
-        public string CoverImageUrl { get; set; }
         public List<Questions> Questions { get; set; }
     }
 }

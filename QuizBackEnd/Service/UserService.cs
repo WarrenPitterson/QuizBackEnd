@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using QuizBackEnd.Data;
 using QuizBackEnd.Interfaces;
 using QuizBackEnd.Models;
 

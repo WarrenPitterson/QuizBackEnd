@@ -10,8 +10,8 @@ using QuizBackEnd.Data;
 namespace QuizBackEnd.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20200715234154_Initial")]
-    partial class Initial
+    [Migration("20200720010209_QuestionChange")]
+    partial class QuestionChange
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,15 +27,20 @@ namespace QuizBackEnd.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CorrectAnswer");
+                    b.Property<string>("CorrectAnswer")
+                        .IsRequired();
 
-                    b.Property<string>("InCorrectAnswer1");
+                    b.Property<string>("IncorrectAnswer1")
+                        .IsRequired();
 
-                    b.Property<string>("InCorrectAnswer2");
+                    b.Property<string>("IncorrectAnswer2")
+                        .IsRequired();
 
-                    b.Property<string>("InCorrectAnswer3");
+                    b.Property<string>("IncorrectAnswer3")
+                        .IsRequired();
 
-                    b.Property<string>("Question");
+                    b.Property<string>("Question")
+                        .IsRequired();
 
                     b.Property<int?>("QuizId");
 
@@ -51,8 +56,6 @@ namespace QuizBackEnd.Migrations
                     b.Property<int>("QuizId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CoverImageUrl");
 
                     b.HasKey("QuizId");
 

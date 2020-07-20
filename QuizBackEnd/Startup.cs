@@ -11,7 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
+using QuizBackEnd.Data;
+using QuizBackEnd.Interfaces;
 using QuizBackEnd.Models;
+using QuizBackEnd.Service;
 
 namespace QuizBackEnd
 {
@@ -41,12 +44,8 @@ namespace QuizBackEnd
                         .AllowCredentials());
             });
 
-            //// In production, the Angular files will be served from this directory
-            //services.AddSpaStaticFiles(configuration =>
-            //{
-            //    configuration.RootPath = "ClientApp/dist";
-            //});
-
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<UserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,19 +72,6 @@ namespace QuizBackEnd
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
             });
-
-            //app.UseSpa(spa =>
-            //{
-            //    // To learn more about options for serving an Angular SPA from ASP.NET Core,
-            //    // see https://go.microsoft.com/fwlink/?linkid=864501
-
-            //    spa.Options.SourcePath = "ClientApp";
-
-            //    if (env.IsDevelopment())
-            //    {
-            //        spa.UseAngularCliServer(npmScript: "start");
-            //    }
-            //});
         }
     }
 }
