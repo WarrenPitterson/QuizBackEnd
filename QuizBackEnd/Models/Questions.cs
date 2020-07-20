@@ -20,5 +20,6 @@ namespace QuizBackEnd.Models
         public string IncorrectAnswer2 { get; set; }
 
         public string IncorrectAnswer3 { get; set; }
+        public int QuizId { get; set; }
     }
 }

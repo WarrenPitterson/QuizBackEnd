@@ -30,9 +30,9 @@ namespace QuizBackEnd.Controllers
 
         // GET: api/Questions/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Questions>> GetQuestions(int id)
+        public ActionResult<Questions> GetQuestions(int id)
         {
-            var questions = await _context.Questions.FindAsync(id);
+            var questions = _context.Questions.FirstOrDefault(f => f.QuizId == id);
 
             if (questions == null)
             {
