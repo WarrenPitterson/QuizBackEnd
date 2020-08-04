@@ -10,6 +10,6 @@ namespace QuizBackEnd.Models
     {
         [Key]
         public int QuizId { get; set; }
-        public List<Questions> Questions { get; set; }
+        public Questions[] QuestionsArray { get; set; }
     }
 }

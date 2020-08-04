@@ -76,7 +76,7 @@ namespace QuizBackEnd.Migrations
             modelBuilder.Entity("QuizBackEnd.Models.Questions", b =>
                 {
                     b.HasOne("QuizBackEnd.Models.Quiz")
-                        .WithMany("Questions")
+                        .WithMany("QuestionsArray")
                         .HasForeignKey("QuizId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

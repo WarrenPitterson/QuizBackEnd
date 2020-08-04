@@ -18,6 +18,14 @@ namespace QuizBackEnd.Service
             _context = context;
         }
 
+        public User FindUserById(int id)
+        {
+            var user = _context.User.SingleOrDefault(x => x.UserId == id);
+
+            return user;
+        }
+
+
         public User Login(string userName, string password)
         {
             if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password))

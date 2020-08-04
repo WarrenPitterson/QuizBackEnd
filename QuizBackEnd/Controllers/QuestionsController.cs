@@ -22,24 +22,24 @@ namespace QuizBackEnd.Controllers
         }
 
         // GET: api/Questions
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Questions>>> GetQuestions()
+        [HttpGet("quiz/{id}")]
+        public async Task<ActionResult<IEnumerable<Questions>>> GetAllQuizQuestionsById(int id)
         {
-            return await _context.Questions.ToListAsync();
+            return await _context.Questions.Where(f => f.QuizId == id).ToListAsync();
         }
 
         // GET: api/Questions/5
         [HttpGet("{id}")]
-        public ActionResult<Questions> GetQuestions(int id)
+        public async Task<ActionResult<Questions>> GetQuestions(int id)
         {
-            var questions = _context.Questions.FirstOrDefault(f => f.QuizId == id);
+            var questions = _context.Questions.FirstOrDefaultAsync(f => f.QuizId == id);
 
             if (questions == null)
             {
                 return NotFound();
             }
 
-            return questions;
+            return await questions;
         }
 
         // PUT: api/Questions/5
