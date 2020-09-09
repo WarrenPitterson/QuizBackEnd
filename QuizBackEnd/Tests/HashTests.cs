@@ -56,7 +56,23 @@ namespace QuizBackEnd.Tests
             var hash2 = Hash.Create(message2, salt);
 
             // Assert  
-            Assert.True(hash1 != hash2);
+            Assert.AreNotEqual(hash1, hash2);
+        }
+
+        [Test]
+        public void Hash_of_same_messages_does_not_match()
+        {
+            // Arrange  
+            var message1 = "password";
+            var message2 = "password";
+            var salt = Salt.Create();
+
+            // Act  
+            var hash1 = Hash.Create(message1, salt);
+            var hash2 = Hash.Create(message2, salt);
+
+            // Assert  
+            Assert.AreEqual(hash1, hash2);
         }
     }
 }

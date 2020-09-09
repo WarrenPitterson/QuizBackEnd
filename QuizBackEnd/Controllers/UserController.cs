@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using QuizBackEnd.Common;
 using QuizBackEnd.Data;
 using QuizBackEnd.Interfaces;
 using QuizBackEnd.Models;
@@ -50,6 +51,36 @@ namespace QuizBackEnd.Controllers
                 Username = user.UserName,
                 Permission = user.Permission,
             });
+        }
+
+
+
+        // POST: api/User
+        [HttpPost("register")]
+        public async Task<ActionResult<User>> AddUser([FromBody]User user)
+        {
+            user.Password = _userService.Register(user.UserName, user.Password);
+
+            _context.User.Add(user);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetUser", new { id = user.UserId }, user);
+        }
+
+        // DELETE: api/UsersController/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<User>> DeleteUser(int id)
+        {
+            var user = await _context.User.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            _context.User.Remove(user);
+            await _context.SaveChangesAsync();
+
+            return user;
         }
 
     }
