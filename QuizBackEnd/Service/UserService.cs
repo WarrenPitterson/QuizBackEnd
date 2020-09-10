@@ -6,6 +6,7 @@ using QuizBackEnd.Common;
 using QuizBackEnd.Data;
 using QuizBackEnd.Interfaces;
 using QuizBackEnd.Models;
+using QuizBackEnd.Tests;
 
 namespace QuizBackEnd.Service
 {
@@ -13,7 +14,6 @@ namespace QuizBackEnd.Service
     {
 
         private readonly ApplicationContext _context;
-        private readonly  string salt = "whhRBnRlMEz6gl95lzqzQw==";
 
 
         public UserService(ApplicationContext context)
@@ -35,28 +35,26 @@ namespace QuizBackEnd.Service
                 return null;
 
             var user = _context.User.SingleOrDefault(x => x.UserName == userName);
+            var userValidation = Hash.Validate(password, user.Salt, user. Password);
+         
+            if (!userValidation) { return null; }
 
-            // check if username exists
-            if (user == null)
-                return null;
-
-            // check if password is correct
-            if (password != user.Password)
-                return null;
-
-            // authentication successful
             return user;
         }
 
-        public string Register(string userName, string password)
+        public User Register(User user)
         {
-            // Move to app Settings after testing 
-            // same salt for all users
-            var passwordSalt = salt;
-            var hashPassword = Hash.Create(password, passwordSalt);
+            var passwordSalt = Salt.Create();
+            var hashPassword = Hash.Create(user.Password, passwordSalt);
 
-            return hashPassword;
+            user.Password = hashPassword;
+            user.Salt = passwordSalt;
+            
+
+            return user;
 
         }
+
+       
     }
 }

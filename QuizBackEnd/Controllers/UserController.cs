@@ -59,7 +59,7 @@ namespace QuizBackEnd.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<User>> AddUser([FromBody]User user)
         {
-            user.Password = _userService.Register(user.UserName, user.Password);
+            _userService.Register(user);
 
             _context.User.Add(user);
             await _context.SaveChangesAsync();

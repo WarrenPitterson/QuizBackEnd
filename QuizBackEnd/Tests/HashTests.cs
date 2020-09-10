@@ -74,5 +74,23 @@ namespace QuizBackEnd.Tests
             // Assert  
             Assert.AreEqual(hash1, hash2);
         }
+
+        [Test]
+        public void login_test()
+        {
+            //Arrange
+            var message = "1234567";
+            var salt = "whhRBnRlMEz6gl95lzqzQw==";
+            var hash = Hash.Create(message, salt);
+
+            //Act
+            var match = Hash.Validate(message, salt, hash);
+
+            //Assert
+            Assert.True(match);
+        }
     }
 }
+
+
+

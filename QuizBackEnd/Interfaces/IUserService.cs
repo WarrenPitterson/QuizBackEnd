@@ -10,7 +10,7 @@ namespace QuizBackEnd.Interfaces
     {
 
         User Login(string userName, string password);
-        string Register(string userName, string password);
+        User Register(User user);
 
     }
 }

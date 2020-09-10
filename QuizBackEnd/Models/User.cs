@@ -16,9 +16,7 @@ namespace QuizBackEnd.Models
         [Required]
         public string Password { get; set; }
         [Required]
-        public byte[] PasswordHash { get; set; }
-        [Required]
         public PermissionLevels Permission { get; set; }
-       
+        public string Salt { get; set; }
     }
 }
