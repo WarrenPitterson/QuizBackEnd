@@ -28,6 +28,17 @@ namespace QuizBackEnd.Controllers
             return await _context.Questions.Where(f => f.QuizId == id).ToListAsync();
         }
 
+        // POST: api/User
+        [HttpPost("Add")]
+        public async Task<ActionResult<Questions>> AddQuestion([FromBody]Questions questions)
+        {
+
+            _context.Questions.Add(questions);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetQuestions", new { id = questions.QuestionId }, questions);
+        }
+
         // GET: api/Questions/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Questions>> GetQuestions(int id)
@@ -75,6 +86,23 @@ namespace QuizBackEnd.Controllers
         private bool QuestionsExists(int id)
         {
             return _context.Questions.Any(e => e.QuestionId == id);
+        }
+
+
+        // DELETE: api/Questions/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Questions>> DeleteQuestion(int id)
+        {
+            var question = await _context.Questions.FindAsync(id);
+            if (question == null)
+            {
+                return NotFound();
+            }
+
+            _context.Questions.Remove(question);
+            await _context.SaveChangesAsync();
+
+            return question;
         }
 
 
