@@ -13,7 +13,7 @@ namespace QuizBackEnd.Migrations
                 {
                     QuizId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CoverImageUrl = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -28,7 +28,8 @@ namespace QuizBackEnd.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UserName = table.Column<string>(nullable: false),
                     Password = table.Column<string>(nullable: false),
-                    Permission = table.Column<int>(nullable: false)
+                    Permission = table.Column<int>(nullable: false),
+                    Salt = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -43,10 +44,10 @@ namespace QuizBackEnd.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Question = table.Column<string>(nullable: true),
                     CorrectAnswer = table.Column<string>(nullable: true),
-                    InCorrectAnswer1 = table.Column<string>(nullable: true),
-                    InCorrectAnswer2 = table.Column<string>(nullable: true),
-                    InCorrectAnswer3 = table.Column<string>(nullable: true),
-                    QuizId = table.Column<int>(nullable: true)
+                    IncorrectAnswer1 = table.Column<string>(nullable: true),
+                    IncorrectAnswer2 = table.Column<string>(nullable: true),
+                    IncorrectAnswer3 = table.Column<string>(nullable: true),
+                    QuizId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -56,7 +57,7 @@ namespace QuizBackEnd.Migrations
                         column: x => x.QuizId,
                         principalTable: "Quiz",
                         principalColumn: "QuizId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
