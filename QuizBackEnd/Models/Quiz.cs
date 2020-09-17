@@ -12,7 +12,7 @@ namespace QuizBackEnd.Models
         public int QuizId { get; set; }
         public string Name { get; set; }
         //List or Array
-        public Questions[] QuestionsArray { get; set; }
-      //  public  List<Questions> Questions { get; set; }
+      //  public Questions[] QuestionsArray { get; set; }
+        public  List<Questions> Questions { get; set; }
     }
 }

@@ -87,11 +87,21 @@ namespace QuizBackEnd.Controllers
         public async Task<ActionResult<Quiz>> DeleteQuiz(int id)
         {
             var quiz = await _context.Quiz.FindAsync(id);
+
             if (quiz == null)
             {
                 return NotFound();
             }
 
+            //extract to method once service is creatd
+            var questions = quiz.Questions.FindAll(f => f.QuizId == id);
+
+            foreach (var question in questions)
+            {
+                _context.Questions.Remove(question);
+
+            }
+            
             _context.Quiz.Remove(quiz);
             await _context.SaveChangesAsync();
 

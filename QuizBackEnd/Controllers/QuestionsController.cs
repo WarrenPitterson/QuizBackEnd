@@ -32,7 +32,6 @@ namespace QuizBackEnd.Controllers
         [HttpPost("Add")]
         public async Task<ActionResult<Questions>> AddQuestion([FromBody]Questions questions)
         {
-          //  questions.QuestionId = _context.Questions.Where(f => f.QuestionId > 0).OrderBy(o => o.QuestionId).LastOrDefault().QuestionId + 1;
 
             _context.Questions.Add(questions);
             await _context.SaveChangesAsync();
