@@ -28,7 +28,7 @@ namespace QuizBackEnd.Controllers
             _context = context;
             _userService = userService;
         }
-
+        
         // GET: api/User
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUser()

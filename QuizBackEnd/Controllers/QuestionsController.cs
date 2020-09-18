@@ -26,10 +26,11 @@ namespace QuizBackEnd.Controllers
         public async Task<ActionResult<IEnumerable<Questions>>> GetAllQuizQuestionsById(int id)
         {
             return await _context.Questions.Where(f => f.QuizId == id).ToListAsync();
+
         }
 
         // POST: api/Questions
-        [HttpPost("Add")]
+        [HttpPost]
         public async Task<ActionResult<Questions>> AddQuestion([FromBody]Questions questions)
         {
 

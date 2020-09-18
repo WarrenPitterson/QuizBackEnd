@@ -42,36 +42,6 @@ namespace QuizBackEnd.Controllers
             return quiz;
         }
 
-        // PUT: api/Quizs/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutQuiz(int id, Quiz quiz)
-        {
-            if (id != quiz.QuizId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(quiz).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!QuizExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
         // POST: api/Quizs
         [HttpPost]
         public async Task<ActionResult<Quiz>> PostQuiz(Quiz quiz)
@@ -86,31 +56,32 @@ namespace QuizBackEnd.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Quiz>> DeleteQuiz(int id)
         {
-            var quiz = await _context.Quiz.FindAsync(id);
+            var quiz = await _context.Quiz.Include(i => i.Questions).Where(f => f.QuizId == id).FirstOrDefaultAsync();
 
             if (quiz == null)
             {
                 return NotFound();
             }
 
-            //extract to method once service is creatd
-            var questions = quiz.Questions.FindAll(f => f.QuizId == id);
 
-            foreach (var question in questions)
+            //extract to method once service is created
+
+            if (quiz.Questions.Any())
             {
-                _context.Questions.Remove(question);
+                var questions = quiz.Questions.Where(f => f.QuizId == id).ToList();
 
+                foreach (var question in questions)
+                {
+                    _context.Questions.Remove(question);
+
+                }
             }
+               
             
             _context.Quiz.Remove(quiz);
             await _context.SaveChangesAsync();
 
             return quiz;
-        }
-
-        private bool QuizExists(int id)
-        {
-            return _context.Quiz.Any(e => e.QuizId == id);
         }
     }
 }
