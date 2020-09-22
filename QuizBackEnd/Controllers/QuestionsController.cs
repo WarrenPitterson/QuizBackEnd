@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using QuizBackEnd.Models;
 
 namespace QuizBackEnd.Controllers
 {
+   // [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class QuestionsController : ControllerBase
@@ -25,6 +27,8 @@ namespace QuizBackEnd.Controllers
         [HttpGet("quiz/{id}")]
         public async Task<ActionResult<IEnumerable<Questions>>> GetAllQuizQuestionsById(int id)
         {
+
+
             return await _context.Questions.Where(f => f.QuizId == id).ToListAsync();
 
         }
@@ -44,6 +48,7 @@ namespace QuizBackEnd.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Questions>> GetQuestions(int id)
         {
+
             var questions = _context.Questions.FirstOrDefaultAsync(f => f.QuizId == id);
 
             if (questions == null)

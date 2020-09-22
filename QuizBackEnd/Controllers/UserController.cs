@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using QuizBackEnd.Common;
 using QuizBackEnd.Data;
 using QuizBackEnd.Interfaces;
@@ -40,17 +45,31 @@ namespace QuizBackEnd.Controllers
         [HttpPost("login")]
         public IActionResult Authenticate([FromBody] User model)
         {
-            var user = _userService.Login(model.UserName, model.Password);
 
+            var user = _userService.Login(model.UserName, model.Password);
+            
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
 
-            return Ok(new
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes("test key with a longer length");
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Id = user.UserId,
-                Username = user.UserName,
-                Permission = user.Permission,
-            });
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()), 
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.Role, user.Permission.ToString()),
+                }),
+                Expires = DateTime.Now.AddMinutes(30),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
+            };
+
+            var token = tokenHandler.CreateToken((tokenDescriptor));
+            var tokenString = tokenHandler.WriteToken(token);
+
+            return Ok(new {tokenString});
+
         }
 
 
@@ -60,6 +79,11 @@ namespace QuizBackEnd.Controllers
         public async Task<ActionResult<User>> AddUser([FromBody]User user)
         {
             _userService.Register(user);
+
+            if (UserExists(user.UserName))
+            {
+                return BadRequest(new {message = "User Already Exists"});
+            }
 
             _context.User.Add(user);
             await _context.SaveChangesAsync();
@@ -81,6 +105,12 @@ namespace QuizBackEnd.Controllers
             await _context.SaveChangesAsync();
 
             return user;
+        }
+
+        private bool UserExists(string username)
+        {
+            username = username.ToLower();
+            return _context.User.Any(e => e.UserName == username);
         }
 
     }
