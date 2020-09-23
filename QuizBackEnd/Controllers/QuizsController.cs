@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using QuizBackEnd.Data;
 using QuizBackEnd.Models;
 
 namespace QuizBackEnd.Controllers
 {
-   // [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class QuizsController : ControllerBase
@@ -28,7 +23,9 @@ namespace QuizBackEnd.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Quiz>>> GetQuiz()
         {
-            return await _context.Quiz.ToListAsync();
+            var quiz = _context.Quiz.Include(i => i.Questions).ToListAsync();
+
+            return await quiz;
         }
 
         // GET: api/Quizs/5
@@ -66,8 +63,6 @@ namespace QuizBackEnd.Controllers
                 return NotFound();
             }
 
-
-            //extract to method once service is created
 
             if (quiz.Questions.Any())
             {

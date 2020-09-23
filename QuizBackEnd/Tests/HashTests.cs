@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization.Infrastructure;
-using QuizBackEnd.Common;
-using NUnit;
+﻿using QuizBackEnd.Common;
 using NUnit.Framework;
 
 namespace QuizBackEnd.Tests

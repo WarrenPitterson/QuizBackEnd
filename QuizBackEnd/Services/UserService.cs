@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 using QuizBackEnd.Common;
 using QuizBackEnd.Data;
 using QuizBackEnd.Interfaces;
 using QuizBackEnd.Models;
-using QuizBackEnd.Tests;
 
 namespace QuizBackEnd.Service
 {
@@ -19,13 +20,6 @@ namespace QuizBackEnd.Service
         public UserService(ApplicationContext context)
         {
             _context = context;
-        }
-
-        public User FindUserById(int id)
-        {
-            var user = _context.User.SingleOrDefault(x => x.UserId == id);
-
-            return user;
         }
 
 
@@ -55,6 +49,26 @@ namespace QuizBackEnd.Service
 
         }
 
-       
+        public string CreateToken(User user)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes("test key with a longer length");
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.Role, user.Permission.ToString()),
+                }),
+                Expires = DateTime.Now.AddMinutes(30),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
+            };
+
+            var token = tokenHandler.CreateToken((tokenDescriptor));
+            var tokenString = tokenHandler.WriteToken(token);
+
+            return tokenString;
+        }
     }
 }

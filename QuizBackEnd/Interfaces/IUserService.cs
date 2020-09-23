@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using QuizBackEnd.Models;
+﻿using QuizBackEnd.Models;
 
 namespace QuizBackEnd.Interfaces
 {
@@ -12,5 +8,6 @@ namespace QuizBackEnd.Interfaces
         User Login(string userName, string password);
         User Register(User user);
 
+        string CreateToken(User user);
     }
 }
